@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:carelan/model/login_model.dart';
 import 'package:carelan/model/registermodel.dart';
 import 'package:carelan/model/user_profile_model.dart';
@@ -93,14 +94,15 @@ Future<UserRegisterModel> register({
 }
 
 Future<AddPatientModel> addPatient({
-required String name, addedby, mobile, image, description
+required String name, addedby, mobile, image, description, required File pdffile
 }) async {
-  Map<String, String> body = {
+  Map<String, dynamic> body = {
     'added_by': addedby,
     'name': name,
     'mobile' : mobile,
     'image' : image,
-    'description' : description
+    'description' : description,
+    'file' : pdffile
   };
 
   http.Response response = await http.post(
