@@ -10,6 +10,7 @@ import '../../../service/verify_phoneno.dart';
 import '../../../utils/constant/app_color.dart';
 import '../../../utils/constant/widgets.dart';
 import 'doctorhome.dart';
+import 'package:file_picker/file_picker.dart';
 
 class AddPatient extends StatefulWidget {
   const AddPatient({Key? key}) : super(key: key);
@@ -22,13 +23,13 @@ class _AddPatientState extends State<AddPatient> {
   ImagePicker picker = ImagePicker();
   PickedFile? pickedImage;
   late File? imageFile = null;
+  late File? pdfFile = null;
   String imagePath = "";
   TextEditingController? nameController = TextEditingController();
   final TextEditingController? mobileController = TextEditingController();
   final TextEditingController? descriptionController = TextEditingController();
   bool _validate = false;
   bool isLoading = false;
-
   late SharedPreferences logindata;
   String addedby = '';
 
@@ -222,8 +223,9 @@ class _AddPatientState extends State<AddPatient> {
                                       mobile: mobileController!.text,
                                       //address: addressController!.text,
                                       image: base64string,
-                                      description: descriptionController!.text)
-                                  .then((value) {
+                                      description: descriptionController!.text,
+                                      pdffile : pdfFile!
+                              ).then((value) {
                                 AddPatientModel addpastient = value;
                                 if (addpastient.status == 1) {
                                   String msg = addpastient.msg.toString();
@@ -295,10 +297,44 @@ class _AddPatientState extends State<AddPatient> {
               },
               label: Text("Gallery"),
             ),
+            FlatButton.icon(
+              icon: Icon(Icons.picture_as_pdf),
+              onPressed: () {
+                takePdfFromGallery();
+                Navigator.pop(context);
+              },
+              label: Text("Pdf"),
+            ),
           ])
         ],
       ),
     );
+  }
+
+  void takePdfFromGallery() async {
+
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+    if (result != null) {
+      setState(() {
+        pdfFile = File(result.files.single.path!);
+        // pdfFile = File(result.files.single.path!);
+        print('0------------0---------0');
+      });
+
+    } else {
+      // User canceled the picker
+    }
+    // PickedFile? pickedFile = await ImagePicker().getImage(
+    //   source: ImageSource.gallery,
+    //   maxWidth: 1000,
+    //   maxHeight: 1000,
+    // );
+    // if (pickedFile != null) {
+    //   setState(() {
+    //     imageFile = File(pickedFile.path);
+    //   });
+    // }
   }
 
   void takePhotoFromGallery() async {
