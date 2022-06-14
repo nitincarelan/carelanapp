@@ -50,6 +50,7 @@ dev_dependencies:
   permission_handler: ^9.2.0
   shared_preferences: ^2.0.13
   share_plus: ^4.0.4
+  file_picker: ^4.6.1
   #video_player: ^2.4.0
 #  firebase_messaging: ^11.2.13
 #  firebase_core: ^1.14.1
